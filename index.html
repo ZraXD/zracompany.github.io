@@ -5,6 +5,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Helvetica:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> <!-- Include Particles.js -->
     <style>
         .slide {
             display: none; /* Hide slides by default */
@@ -12,26 +13,215 @@
         .active {
             display: block; /* Show the slide that has the 'active' class */
         }
+        /* Existing styles... */
+        .hover\:text-blue-500:hover {
+            color: #e5e7eb; /* Light gray color */
+        }
+        .navbar {
+            position: fixed; /* Fix position to the top of the page */
+            width: 100%; /* Full width */
+            top: 0; /* Align to the top */
+            z-index: 1000; /* Ensure it stays on top of other content */
+            background-color: #ffffff; /* Background color */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Shadow for depth */
+        }
+        body {
+            padding-top: 70px; /* Add padding to the top of the body to prevent content from being hidden behind the navbar */
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+            position: relative; /* Position relative for the particles container */
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Send particles behind other content */
+        }
+        .since-section {
+            background-color: #f9fafb; /* Light background color */
+            padding: 20px;
+            text-align: center;
+        }
+        .since-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px; /* Space between columns */
+        }
+        .since-column div {
+            flex: 1; /* Equal width */
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Consistent with other design elements */
+        }
+        .article-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .article-section h2 {
+            font-size: 2rem;
+            color: #1f2937; /* Dark gray */
+            margin-bottom: 16px;
+        }
+        .article-section p {
+            color: #4b5563; /* Gray */
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .services-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .services-section h2 {
+            font-size: 2rem;
+            color: #1f2937; /* Dark gray */
+            margin-bottom: 16px;
+        }
+        .service-card {
+            max-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 10px;
+        }
+        .systems-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .systems-section h2 {
+            font-size: 2rem;
+            color: #1f2937; /* Dark gray */
+            margin-bottom: 16px;
+        }
+        .system-card {
+            max-width: 300px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 10px;
+        }
+        .technology-section {
+            padding: 20px;
+            text-align: center;
+            background-color: #f9fafb; /* Light background color */
+        }
+        .technology-section h2 {
+            font-size: 2rem;
+            color: #1f2937; /* Dark gray */
+            margin-bottom: 16px;
+        }
+        .technology-section p {
+            color: #4b5563; /* Gray */
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .cooperation-section {
+            padding: 20px;
+            text-align: center;
+        }
+        .cooperation-images {
+            position: relative;
+            max-width: 800px; /* Set a max width for the slider */
+            margin: auto;
+            overflow: hidden; /* Hide overflow to create a sliding effect */
+        }
+        .slides-container {
+            display: flex; /* Use flexbox to arrange slides in a row */
+            transition: transform 0.5s ease; /* Smooth transition for sliding */
+        }
+        .slide {
+            min-width: 100%; /* Each slide takes full width of the container */
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+        }
+        .slide img {
+            width: 100%; /* Make images responsive */
+            border-radius: 8px; /* Optional: add rounded corners */
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8); /* Dark background on hover */
+        }
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Start fully transparent */
+                transform: translateY(20px); /* Start slightly lower */
+            }
+            to {
+                opacity: 1; /* End fully opaque */
+                transform: translateY(0); /* End at original position */
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards; /* Apply the fade-in animation */
+        }
+
+        /* Scale animation */
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8); /* Start slightly smaller */
+                opacity: 0; /* Start fully transparent */
+            }
+            to {
+                transform: scale(1); /* End at original size */
+                opacity: 1; /* End fully opaque */
+            }
+        }
+
+        .scale-in {
+            animation: scaleIn 1s ease forwards; /* Apply the scale-in animation */
+        }
+
+        /* Optional: Delay for each element */
+        .fade-in:nth-child(1) {
+            animation-delay: 0.2s; /* Delay for the first element */
+        }
+        .fade-in:nth-child(2) {
+            animation-delay: 0.4s; /* Delay for the second element */
+        }
+        .fade-in:nth-child(3) {
+            animation-delay: 0.6s; /* Delay for the third element */
+        }
     </style>
 </head>
 <body class="font-sans bg-gray-50 text-gray-800">
-    <!-- Navigation Bar -->
-    <div class="bg-white shadow-md">
+    <div id="particles-js"></div> <!-- Particles container -->
+
+    <!-- Fixed Navigation Bar -->
+    <div class="navbar">
         <div class="container mx-auto flex justify-between items-center py-4 px-5">
             <div class="flex items-center space-x-4">
-                <!-- Updated logo text -->
                 <span class="text-xl font-bold text-gray-800">ZC</span>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Home</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Services</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">About Us</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Sistems</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Technology</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Cooperation</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Entertainment</a>
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Supports</a>
+                <a href="#Home" class="text-gray-800 hover:text-blue-500 font-medium">Home</a>
+                <a href="#services" class="text-gray-800 hover:text-blue-500 font-medium">Services</a>
+                <a href="#about" class="text-gray-800 hover:text-blue-500 font-medium">About Us</a>
+                <a href="#systems" class="text-gray-800 hover:text-blue-500 font-medium">Systems</a>
+                <a href="#technology" class="text-gray-800 hover:text-blue-500 font-medium">Technology</a>
+                <a href="#cooperation" class="text-gray-800 hover:text-blue-500 font-medium">Cooperation</a>
+                <a href="https://youtube.com" class="text-gray-800 hover:text-blue-500 font-medium">Entertainment</a>
+                <a href="https://zraxd.github.io" class="text-gray-800 hover:text-blue-500 font-medium">Supports</a>
+                <a href="https://www.samsung.com/id/" class="text-gray-800 hover:text-blue-500 font-medium">Partnership</a>
             </div>
             <div class="flex items-center space-x-4">
-                <a href="#" class="text-gray-800 hover:text-blue-500 font-medium"></a>
                 <a href="#" class="text-gray-800 hover:text-blue-500 font-medium">Pengaturan</a>
                 <div class="relative">
                     <input type="text" class="border border-gray-300 rounded-md pl-10 pr-3 py-1 focus:border-blue-500 focus:ring-blue-500" placeholder="Search...">
@@ -49,16 +239,16 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container mx-auto text-center py-16">
-        <h2 class="text-3xl font-semibold text-gray-800 mb-4">ZRA COMPANY</h2>
-        <h1 class="text-6xl font-bold text-gray-900 mb-6">MEMBANGUN TEKNOLOGI MASA DEPAN</h1>
-        <p class="text-lg text-gray-600">Perangkat Lunak dan Sistem Informasi untuk Bisnis Anda.</p>
+    <div class="container mx-auto text-center py-16" id="Home">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-4 fade-in">ZRA COMPANY</h2>
+        <h1 class="text-6xl font-bold text-gray-900 mb-6 scale-in">MEMBANGUN TEKNOLOGI MASA DEPAN</h1>
+        <p class="text-lg text-gray-600 fade-in">Perangkat Lunak dan Sistem Informasi untuk Bisnis Anda.</p>
     </div>
     
     <!-- Vision and Mission Section -->
     <div class="container mx-auto px-4 py-16">
         <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800">Company Visions & Misions</h2>
+            <h2 class="text-3xl font-bold text-gray-800">Company Visions & Missions</h2>
             <p class="text-md text-gray-600">Discover our vision and mission.</p>
         </div>
         <div class="flex flex-wrap justify-center gap-10">
@@ -82,17 +272,266 @@
         </div>
     </div>
 
+    <!-- Services Section -->
+    <div class="services-section" id="services">
+        <div class="container mx-auto">
+            <h2>Our Services</h2>
+            <div class="flex flex-wrap justify-center">
+                <div class="service-card">
+                    <h3 class="font-bold text-lg text-gray-800">Pengembangan Perangkat Lunak</h3>
+                    <p class="text-gray-600">Kami menyediakan layanan pengembangan perangkat lunak kustom yang disesuaikan dengan kebutuhan bisnis Anda.</p>
+                </div>
+                <div class="service-card">
+                    <h3 class="font-bold text-lg text-gray-800">Integrasi Sistem</h3>
+                    <p class="text-gray-600">Layanan integrasi sistem untuk memastikan semua aplikasi dan perangkat lunak Anda bekerja secara harmonis.</p>
+                </div>
+                <div class="service-card">
+                    <h3 class="font-bold text-lg text-gray-800">Pemeliharaan dan Dukungan</h3>
+                    <p class="text-gray-600">Kami menawarkan pemeliharaan dan dukungan berkelanjutan untuk perangkat lunak Anda agar tetap berjalan dengan baik.</p>
+                </div>
+                <div class="service-card">
+                    <h3 class="font-bold text-lg text-gray-800">Konsultasi Teknologi</h3>
+                    <p class="text-gray-600">Konsultasi untuk membantu Anda memilih teknologi yang tepat dan strategi pengembangan perangkat lunak yang efektif.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Article Section -->
+        <div class="article-section" id="about"> <!-- Added ID for linking -->
+            <div class="container mx-auto">
+                <h2>About Our Company</h2>
+                <p>
+                    Zra Company berdedikasi untuk menyediakan solusi teknologi inovatif yang memberdayakan bisnis untuk berkembang dalam lanskap yang kompetitif. Komitmen kami terhadap keunggulan dan kepuasan pelanggan mendorong kami untuk memberikan perangkat lunak dan layanan berkualitas tinggi yang disesuaikan untuk memenuhi kebutuhan unik klien kami. Dengan fokus pada peningkatan berkelanjutan dan adaptasi terhadap tren pasar, kami berusaha untuk menjadi yang terdepan dalam kemajuan teknologi.
+                </p>
+            </div>
+        </div>
+
+    <!-- Systems Section -->
+    <div class="systems-section" id="systems">
+        <div class="container mx-auto">
+            <h2>Our Systems</h2>
+            <div class="flex flex-wrap justify-center">
+                <div class="system-card">
+                    <h3 class="font-bold text-lg text-gray-800">HTML</h3>
+                    <p class="text-gray-600">HTML (HyperText Markup Language) adalah bahasa markup standar untuk membuat halaman web. Ini memberikan struktur dasar untuk konten di internet.</p>
+                </div>
+                <div class="system-card">
+                    <h3 class="font-bold text-lg text-gray-800">CSS</h3>
+                    <p class="text-gray-600">CSS (Cascading Style Sheets) digunakan untuk mendesain dan mengatur tata letak halaman web. Ini memungkinkan kami untuk membuat tampilan yang menarik dan responsif.</p>
+                </div>
+                <div class="system-card">
+                    <h3 class="font-bold text-lg text-gray-800">PHP</h3>
+                    <p class="text-gray-600">PHP (Hypertext Preprocessor) adalah bahasa pemrograman server-side yang digunakan untuk pengembangan web. Ini memungkinkan kami untuk membuat aplikasi web dinamis dan interaktif.</p>
+                </div>
+                <div class="system-card">
+                    <h3 class="font-bold text-lg text-gray-800">Java</h3>
+                    <p class="text-gray-600">Java adalah bahasa pemrograman yang digunakan untuk membangun aplikasi yang dapat dijalankan di berbagai platform. Ini dikenal karena keamanannya dan kemampuannya untuk menangani aplikasi berskala besar.</p>
+                </div>
+                <div class="system-card">
+                    <h3 class="font-bold text-lg text-gray-800">Python</h3>
+                    <p class="text-gray-600">Python adalah bahasa pemrograman yang mudah dipelajari dan digunakan untuk berbagai aplikasi, termasuk pengembangan web, analisis data, dan kecerdasan buatan. Ini memungkinkan pengembangan yang cepat dan efisien.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technology Section -->
+    <div class="technology-section" id="technology">
+        <div class="container mx-auto">
+            <h2>Teknologi Kami</h2>
+            <p>
+                ZRA Company memanfaatkan teknologi mutakhir untuk menghadirkan solusi inovatif yang memenuhi kebutuhan bisnis modern. Dengan mengintegrasikan bahasa pemrograman canggih, kerangka kerja, dan alat-alat terkini, kami mampu menciptakan aplikasi yang kuat dan skalabel. 
+            </p>
+            <p>
+                Kami berkomitmen untuk terus berada di garis depan kemajuan teknologi, memastikan bahwa klien kami mendapatkan solusi terbaik yang tidak hanya efisien tetapi juga berkelanjutan. Dengan pendekatan yang berfokus pada inovasi, kami siap membantu Anda menghadapi tantangan masa depan dan meraih kesuksesan di era digital.
+            </p>
+        </div>
+    </div>
+
+    <!-- Cooperation Section -->
+    <div class="cooperation-section" id="cooperation">
+        <h2>Our Cooperation</h2>
+        <div class="cooperation-images">
+            <div class="slides-container">
+                <div class="slide active">
+                    <img src="/corporation/szr.jpg" alt="Cooperation Image 1">
+                </div>
+                <div class="slide">
+                    <img src="/corporation/image2.jpg" alt="Cooperation Image 2"> <!-- Replace with actual image path -->
+                </div>
+                <div class="slide">
+                    <img src="/corporation/image3.jpg" alt="Cooperation Image 3"> <!-- Replace with actual image path -->
+                </div>
+                <div class="slide">
+                    <img src="/corporation/image4.jpg" alt="Cooperation Image 4"> <!-- Replace with actual image path -->
+                </div>
+            </div>
+            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+            <a class="next" onclick="changeSlide(1)">&#10095;</a>
+        </div>
+    </div>
+
+    <!-- Since Section -->
+    <div class="since-section">
+        <div class="container mx-auto since-column">
+            <div>
+                <h3 class="font-bold text-xl text-gray-800">Since</h3>
+                <p class="text-gray-600">2024</p>
+            </div>
+            <div>
+                <h3 class="font-bold text-xl text-gray-800">Founded In</h3>
+                <p class="text-gray-600">Pekanbaru, Indonesia</p>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-gray-100 py-4">
         <div class="container mx-auto px-4 text-center text-sm text-gray-600">
             <p>Hak cipta © 2024 Zra Company. Seluruh hak cipta dilindungi undang-undang.</p>
             <p class="mt-2">
-                <a href="#" class="text-gray-600">Kebijakan Privasi</a> | 
-                <a href="#" class="text-gray-600">Ketentuan Penggunaan</a> | 
-                <a href="#" class="text-gray-600">Legal</a> | 
+                <a href="https://policies.google.com/privacy?hl=id" class="text-gray-600">Kebijakan Privasi</a> | 
+                <a href="https://paskerid.kemnaker.go.id/ketentuan-pengguna" class="text-gray-600">Ketentuan Penggunaan</a> | 
+                <a href="" class="text-gray-600">Legal</a> | 
                 <a href="#" class="text-gray-600">Peta Situs</a> | 
                 <span>Indonesia</span>
             </p>
         </div>
     </footer>
+
+    <script>
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let slides = document.getElementsByClassName("slide");
+            let slidesContainer = document.querySelector('.slides-container');
+            slideIndex++;
+            if (slideIndex >= slides.length) { slideIndex = 0; }    
+            slidesContainer.style.transform = 'translateX(' + (-slideIndex * 100) + '%)'; // Move slides to the left
+            setTimeout(showSlides, 3000); // Change image every 3 seconds
+        }
+
+        function changeSlide(n) {
+            let slides = document.getElementsByClassName("slide");
+            slideIndex += n;
+            if (slideIndex >= slides.length) { slideIndex = 0; }
+            if (slideIndex < 0) { slideIndex = slides.length - 1; }
+            let slidesContainer = document.querySelector('.slides-container');
+            slidesContainer.style.transform = 'translateX(' + (-slideIndex * 100) + '%)'; // Move slides to the left
+        }
+
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
 </body>
 </html>
